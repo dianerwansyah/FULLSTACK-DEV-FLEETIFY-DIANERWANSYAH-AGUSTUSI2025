@@ -145,6 +145,64 @@ go run main.go
 Swagger UI akan tersedia di endpoint:
 ```
 http://localhost:8080/swagger/index.html
+
+POST
+/api/auth/login
+<img width="1411" height="217" alt="image" src="https://github.com/user-attachments/assets/54ba0d29-03af-488e-97c9-c22dbb99a3d9" />
+
+POST
+/api/auth/logout
+
+GET
+/api/auth/me
+
+POST
+/api/attendance
+
+POST
+/api/attendance/GetData
+<img width="1469" height="738" alt="image" src="https://github.com/user-attachments/assets/4008a420-041a-4848-82a9-9057d6bfa3b7" />
+
+POST
+/api/attendance/logs
+<img width="1471" height="688" alt="image" src="https://github.com/user-attachments/assets/df748ef3-8f03-4510-9e60-334a043a331c" />
+
+GET
+/api/attendance/today
+
+POST
+/api/departement
+<img width="1443" height="325" alt="image" src="https://github.com/user-attachments/assets/82bd9a24-cdba-46ba-960f-77139dded20e" />
+
+POST
+/api/departement/GetData
+<img width="1431" height="544" alt="image" src="https://github.com/user-attachments/assets/2beed3bf-9de9-4113-86a7-34fa49d08e1c" />
+
+GET
+/api/departement/{id}
+<img width="1427" height="623" alt="image" src="https://github.com/user-attachments/assets/533ceec8-4295-4570-91a9-ab4b7c43ee33" />
+
+PUT
+/api/departement/{id}
+<img width="1432" height="468" alt="image" src="https://github.com/user-attachments/assets/e8458ab9-14ea-444f-848d-3fee31e85cd7" />
+
+DELETE
+/api/departement/{id}
+<img width="1427" height="534" alt="image" src="https://github.com/user-attachments/assets/982bf7bd-5941-4d99-a5f1-26d789c83237" />
+
+POST
+/api/employee
+<img width="1411" height="425" alt="image" src="https://github.com/user-attachments/assets/f8a5dcad-545e-4d97-90f1-2ea23cf37930" />
+
+GET
+/api/employee/{id}
+<img width="1430" height="631" alt="image" src="https://github.com/user-attachments/assets/0e77f629-21e7-4a7b-9157-96e37d7f2224" />
+
+PUT
+/api/employee/{id}
+<img width="1436" height="485" alt="image" src="https://github.com/user-attachments/assets/daf87c92-efce-42b7-b882-268970bcf279" />
+
+
 ```
 
 ---
