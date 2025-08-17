@@ -30,7 +30,7 @@ var allowedEmployeeFields = map[string]string{
 // @Failure 401 {object} map[string]string
 // @Failure 403 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /employee [POST]
+// @Router /api/employee [POST]
 func GetAllEmployees(c *gin.Context) {
 	_, exists := c.Get("employee_id")
 	if !exists {
@@ -137,7 +137,7 @@ func GetAllEmployees(c *gin.Context) {
 // @Failure 403 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /employee/{id} [get]
+// @Router /api/employee/{id} [get]
 func GetEmployeeByID(c *gin.Context) {
 	_, exists := c.Get("employee_id")
 	if !exists {
@@ -187,7 +187,7 @@ type EmployeePayload struct {
 // @Failure 401 {object} map[string]string
 // @Failure 403 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /employee [post]
+// @Router /api/employee [post]
 func CreateEmployee(c *gin.Context) {
 	employeeID, exists := c.Get("employee_id")
 	if !exists {
@@ -257,7 +257,7 @@ func CreateEmployee(c *gin.Context) {
 // @Failure 403 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /employee/{id} [put]
+// @Router /api/employee/{id} [put]
 func UpdateEmployee(c *gin.Context) {
 	employeeID, exists := c.Get("employee_id")
 	if !exists {
@@ -322,7 +322,7 @@ func UpdateEmployee(c *gin.Context) {
 // @Failure 403 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /employee/{id} [delete]
+// @Router /api/employee/{id} [delete]
 
 func DeleteEmployee(c *gin.Context) {
 	employeeID, exists := c.Get("employee_id")

@@ -29,7 +29,7 @@ var allowedFields = map[string]string{
 // @Produce json
 // @Success 200 {array} model.Departement
 // @Failure 500 {object} map[string]string
-// @Router /api/departement [POST]
+// @Router /api/departement/GetData [POST]
 func GetAllDepartements(c *gin.Context) {
 	_, exists := c.Get("employee_id")
 	if !exists {
@@ -133,7 +133,7 @@ func GetAllDepartements(c *gin.Context) {
 // @Failure 401 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /departement/{id} [get]
+// @Router /api/departement/{id} [get]
 func GetDepartementByID(c *gin.Context) {
 	_, exists := c.Get("employee_id")
 	if !exists {
@@ -183,7 +183,7 @@ type DepartementPayload struct {
 // @Failure 401 {object} map[string]string
 // @Failure 403 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /departement [post]
+// @Router /api/departement [post]
 func CreateDepartement(c *gin.Context) {
 	employeeID, exists := c.Get("employee_id")
 	if !exists {
@@ -233,7 +233,7 @@ func CreateDepartement(c *gin.Context) {
 // @Failure 403 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /departement/{id} [put]
+// @Router /api/departement/{id} [put]
 func UpdateDepartement(c *gin.Context) {
 	employeeID, exists := c.Get("employee_id")
 	if !exists {
@@ -297,7 +297,7 @@ func UpdateDepartement(c *gin.Context) {
 // @Failure 403 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /departement/{id} [delete]
+// @Router /api/departement/{id} [delete]
 func DeleteDepartement(c *gin.Context) {
 	userID, exists := c.Get("employee_id")
 	if !exists {

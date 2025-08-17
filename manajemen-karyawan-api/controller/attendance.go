@@ -28,7 +28,7 @@ type ClockRequest struct {
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /attendance [POST]
+// @Router /api/attendance [POST]
 func ClockHandler(c *gin.Context) {
 	employeeID := c.GetString("employee_id")
 
@@ -153,7 +153,7 @@ var allowedAttendanceFields = map[string]string{
 // @Success 200 {object} model.AttendanceItem
 // @Failure 401 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /attendance/logs [POST]
+// @Router /api/attendance/logs [POST]
 func GetAttendanceLogs(c *gin.Context) {
 	employeeID, exists := c.Get("employee_id")
 	if !exists {
@@ -322,7 +322,7 @@ func GetAttendanceLogs(c *gin.Context) {
 // @Failure 401 {object} map[string]string
 // @Failure 403 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /attendance/GetData [POST]
+// @Router /api/attendance/GetData [POST]
 func GetAllAttendanceLogs(c *gin.Context) {
 	var params utils.QueryParams
 	if err := utils.BindJSONStrict(c, &params); err != nil {
@@ -488,7 +488,7 @@ var result struct {
 // @Failure 401 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /attendance/today [get]
+// @Router /api/attendance/today [get]
 func GetTodayAttendance(c *gin.Context) {
 	employeeID, exists := c.Get("employee_id")
 	if !exists {
