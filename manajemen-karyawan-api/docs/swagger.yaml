@@ -1,0 +1,711 @@
+basePath: /
+definitions:
+  controller.DepartementPayload:
+    properties:
+      departementName:
+        type: string
+      maxClockInTime:
+        type: string
+      maxClockOutTime:
+        type: string
+    type: object
+  controller.EmployeePayload:
+    properties:
+      address:
+        type: string
+      departmentID:
+        type: string
+      employeeID:
+        type: string
+      name:
+        type: string
+    type: object
+  controller.LoginRequest:
+    properties:
+      employeeID:
+        type: string
+      password:
+        type: string
+    required:
+    - employeeID
+    - password
+    type: object
+  model.AttendanceItem:
+    properties:
+      attendanceType:
+        type: string
+      clock:
+        type: string
+      dateAttendance:
+        type: string
+      departementName:
+        type: string
+      description:
+        type: string
+      employeeID:
+        type: string
+      employeeName:
+        type: string
+      id:
+        type: string
+      maxClock:
+        type: string
+      status:
+        type: string
+    type: object
+  model.Departement:
+    properties:
+      createdAt:
+        type: string
+      createdBy:
+        type: string
+      deletedAt:
+        type: string
+      deletedBy:
+        type: string
+      departementName:
+        type: string
+      id:
+        type: string
+      maxClockInTime:
+        type: string
+      maxClockOutTime:
+        type: string
+      updatedAt:
+        type: string
+      updatedBy:
+        type: string
+    type: object
+  model.Employee:
+    properties:
+      address:
+        type: string
+      createdAt:
+        type: string
+      createdBy:
+        type: string
+      deletedAt:
+        type: string
+      deletedBy:
+        type: string
+      departementID:
+        type: string
+      departementName:
+        type: string
+      employeeID:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+      updatedBy:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: backend@example.com
+    name: Backend Team
+  description: API for managing employee data
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://example.com/terms/
+  title: Employee Management API
+  version: "1.0"
+paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login dan menyimpan JWT di cookie HttpOnly untuk autentikasi
+      parameters:
+      - description: Employee ID dan Password
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controller.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login dengan employee_id dan password
+      tags:
+      - Auth
+  /api/auth/logout:
+    post:
+      description: Menghapus cookie JWT dan mengakhiri sesi user yang login
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Logout user
+      tags:
+      - Auth
+  /api/auth/me:
+    get:
+      description: Validasi session dan mengembalikan user context
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Employee'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Ambil data user dari JWT cookie
+      tags:
+      - Auth
+  /api/departement:
+    post:
+      description: Mengembalikan list semua departemen aktif. Requires valid JWT cookie
+        named "token"
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Departement'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Ambil semua departemen
+      tags:
+      - Departement
+  /attendance:
+    post:
+      description: Menyimpan waktu clock-in untuk karyawan yang login (via JWT cookie)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Clock-in karyawan
+      tags:
+      - Attendance
+  /attendance/GetData:
+    post:
+      description: Menampilkan seluruh data absensi karyawan, bisa difilter berdasarkan
+        tanggal dan departemen. Hanya bisa diakses oleh user dengan role tertentu.
+      parameters:
+      - description: Tanggal (YYYY-MM-DD)
+        in: query
+        name: date
+        type: string
+      - description: ID Departemen
+        in: query
+        name: departement_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.AttendanceItem'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List semua log absensi karyawan
+      tags:
+      - Attendance
+  /attendance/logs:
+    post:
+      description: Menampilkan log absensi milik karyawan yang sedang login, berdasarkan
+        tanggal dan departemen. Autentikasi via JWT cookie.
+      parameters:
+      - description: Tanggal (YYYY-MM-DD)
+        in: query
+        name: date
+        type: string
+      - description: ID Departemen
+        in: query
+        name: departement_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.AttendanceItem'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List log absensi karyawan yang login
+      tags:
+      - Attendance
+  /attendance/today:
+    get:
+      description: Menampilkan data absensi karyawan yang sedang login untuk tanggal
+        hari ini. Autentikasi via JWT cookie.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.AttendanceItem'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Ambil data absensi hari ini milik user yang login
+      tags:
+      - Attendance
+  /departement:
+    post:
+      consumes:
+      - application/json
+      description: Menambahkan data departemen ke sistem. Hanya dapat diakses oleh
+        user dengan role admin. Autentikasi via JWT cookie.
+      parameters:
+      - description: Data departemen
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/controller.DepartementPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Tambah departemen baru
+      tags:
+      - Departement
+  /departement/{id}:
+    delete:
+      description: Menandai departemen sebagai terhapus tanpa menghapus data dari
+        database. Autentikasi via JWT cookie.
+      parameters:
+      - description: ID Departemen
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Hapus departemen (soft delete)
+      tags:
+      - Departement
+    get:
+      description: Mengembalikan detail departemen berdasarkan ID. Autentikasi via
+        JWT cookie.
+      parameters:
+      - description: Departement ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Departement'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Ambil detail departemen
+      tags:
+      - Departement
+    put:
+      consumes:
+      - application/json
+      description: Mengubah data departemen berdasarkan ID. Autentikasi via JWT cookie.
+      parameters:
+      - description: ID Departemen
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Data departemen
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/controller.DepartementPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update data departemen
+      tags:
+      - Departement
+  /employee:
+    post:
+      consumes:
+      - application/json
+      description: Menambahkan data karyawan ke sistem. Autentikasi via JWT cookie.
+      parameters:
+      - description: Data karyawan
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/controller.EmployeePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Tambah karyawan baru
+      tags:
+      - Employee
+  /employee/{id}:
+    get:
+      description: Mengembalikan detail karyawan berdasarkan ID. Autentikasi via JWT
+        cookie.
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Employee'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Ambil detail karyawan berdasarkan ID
+      tags:
+      - Employee
+    put:
+      consumes:
+      - application/json
+      description: Mengubah data karyawan berdasarkan ID. Autentikasi via JWT cookie.
+      parameters:
+      - description: ID Karyawan
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Data karyawan
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/controller.EmployeePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update data karyawan
+      tags:
+      - Employee
+securityDefinitions:
+  CookieAuth:
+    in: cookie
+    name: access_token
+    type: apiKey
+swagger: "2.0"

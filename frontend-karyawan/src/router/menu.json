@@ -1,0 +1,58 @@
+[
+  {
+    "name": "landing",
+    "path": "/",
+    "component": "Landing",
+    "meta": { "public": true, "title": "Landing" },
+    "icon": "mdi-home"
+  },
+  {
+    "name": "login",
+    "path": "/login",
+    "component": "Login",
+    "meta": { "public": true, "title": "Login" },
+    "icon": "mdi-login"
+  },
+  {
+    "name": "dashboard",
+    "path": "/dashboard",
+    "component": "Dashboard",
+    "meta": { "requiresAuth": true, "title": "Dashboard" },
+    "icon": "mdi-view-dashboard"
+  },
+  {
+    "name": "employee",
+    "path": "/employee",
+    "component": "Employee",
+    "meta": { "requiresAuth": true, "title": "Data Employee" },
+    "icon": "mdi-account-group"
+  },
+  {
+    "name": "departemen",
+    "path": "/departemen",
+    "component": "Departemen",
+    "meta": { "requiresAuth": true, "title": "Data Departemen" },
+    "icon": "mdi-office-building"
+  },
+  {
+    "name": "absen",
+    "path": "/absen",
+    "component": "Absen",
+    "meta": { "requiresAuth": true, "title": "Absen" },
+    "icon": "mdi-calendar-check"
+  },
+  {
+    "name": "log-absensi",
+    "path": "/absen/log",
+    "component": "AbsenLog",
+    "meta": { "requiresAuth": true, "title": "Log Absensi" },
+    "icon": "mdi-calendar-clock"
+  },
+  {
+    "name": "attendance",
+    "path": "/attendance",
+    "component": "Attendance",
+    "meta": { "requiresAuth": true, "title": "Data Absensi Karyawan" },
+    "icon": "mdi-calendar-multiselect"
+  }
+]

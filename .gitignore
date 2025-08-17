@@ -1,0 +1,7 @@
+# Backend
+/backend/.env
+/backend/vendor/
+
+# Frontend
+/frontend/node_modules/
+/frontend/dist/
